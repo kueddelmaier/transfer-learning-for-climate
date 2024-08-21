@@ -1,0 +1,12 @@
+{   "grid_name": "ERA5_025",
+    "grid_path" : "grids/ERA5_025.npy",
+    "input_mode" : "ERA5_025",
+    "grid_shape": [67,101,1],
+    "mask_path": "grids/masks/ERA5_025.npy"
+
+    
+}
+
+
+
+

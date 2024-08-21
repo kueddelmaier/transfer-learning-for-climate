@@ -1,0 +1,48 @@
+{   
+    "checkpoint_id": "XfhZU3GuhJ",
+    "load_json": 0,
+    "results_path": "exp_jsons",
+    "precip": 1,
+    "save_nc_files": 1,
+    "offset": 0, 
+
+    "file_info_models": "/net/h2o/climphys1/jkuettel/lin_lat_autoencoder_data/regridded_data/net_cdf_info/file_info_models.csv",
+
+    "file_info_observations": "/net/h2o/climphys1/jkuettel/lin_lat_autoencoder_data/regridded_data/net_cdf_info/file_info_reanalysis.csv",
+
+    "lin_data_from_folder": true,
+    "data_folder_name" : "preprocessed_data/MIX/prec_psl_train_mixed11_holdout_all_reanalysis_from_1955_date_2022_06_09__19_22_id_FNDBN7132U_detrend_TRUE_DEBUG_FALSE",
+
+    "train_subdir": "tfrecords_data/CORDEX/1955_2070",
+    "train_file": "tfrecords_data/CORDEX/1955_2070",
+
+    "test_subdir": "tfrecords_data/CORDEX/1955_2070",
+    "test_file": "test_prec_psl_ens_kba_kbc_kbe_kbg_kbi_kbk_kbm_kbq_kbs_ho_ens_kbb.tfrecords",
+
+    "eval_holdout": false,
+
+
+    "holdout_subdir": "preprocessed_data/CAN/prec_psl_train_can_eval_kbb_detrend_no_id_NSEAN1777J_date_2021_12_02__18_55/tfrecords_data",
+    "holdout_file": "CanESM2_kbb_holdout_NSEAN1777J.tfrecords",
+
+
+    "scaler": "no_scaler",
+
+    "linear_train_length": "full",
+
+    "process_holdout_from_folder": true,
+    "additional_holdout_dir": "tfrecords_data/CORDEX/1955_2070/additional_ho",
+
+    "eval_ERA5_025": true,
+    "ERA5_025_subdir": "preprocessed_data/MIX/prec_psl_train_mixed11_holdout_only_era5_id_YYEYE7245F_date_2022_01_05__16_21_DEBUG_FALSE/tfrecords_data",
+    "ERA5_025_file": "ERA5_holdout_YYEYE7245F.tfrecords",
+
+    "eval_EOBS_025": false,
+
+    "eval_EOBS_01": false,
+
+    "compare_to_era5": false,
+
+    "train_grid" : "CORDEX11"
+
+}

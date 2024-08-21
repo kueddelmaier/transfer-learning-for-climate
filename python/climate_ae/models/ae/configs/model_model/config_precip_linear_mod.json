@@ -1,0 +1,39 @@
+{   
+    "checkpoint_id": "jZ74PiBYfD_",
+    "load_json": 0,
+    "results_path": "exp_jsons",
+    "precip": 1,
+    "save_nc_files": 1,
+    "offset": 0, 
+    "train_grid" : "CORDEX11",
+
+    "file_info_models": "regridded_data/net_cdf_info/file_info_models.csv",
+    "file_info_observations": "regridded_data/net_cdf_info/file_info_reanalysis.csv",
+
+    "lin_tr_te_data_from_folder": true,
+    "lin_holdout_data_from_folder": true,
+    "data_folder_name" : "preprocessed_data/MIX/prec_psl_train_mixed11_holdout_all_reanalysis_from_1955_date_2023_06_07__15_54_id_RLKDW3615C_detrend_TRUE_DEBUG_FALSE",
+
+    "train_subdir": "preprocessed_data/MIX/prec_psl_train_mixed11_holdout_all_reanalysis_from_1955_date_2023_06_07__15_54_id_RLKDW3615C_detrend_TRUE_DEBUG_FALSE/tfrecords_data",
+    "train_file": "",
+
+    "test_subdir": "preprocessed_data/MIX/prec_psl_train_mixed11_holdout_all_reanalysis_from_1955_date_2023_06_07__15_54_id_RLKDW3615C_detrend_TRUE_DEBUG_FALSE/tfrecords_data",
+    "test_file": "",
+
+    "scaler": "no_scaler",
+    "linear_train_length": "full",
+ 
+    
+    "reanalysis_only": false,
+
+    "eval_adjusted_mean": true,
+
+    "split_tr_file_in_tr_and_te" : false,
+    "min_test_years" : 90,
+    "square_annos": false,
+    "scale_eobs": false,
+    "eval_years": "all",
+    "land_values_only": true,
+    "alphas_ridge": [0.00001,  0.0001, 0.0005, 0.001, 0.0025, 0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1]
+}
+

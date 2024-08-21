@@ -1,0 +1,7 @@
+{
+    "CORDEX-11": "/net/h2o/climphys1/jkuettel/lin_lat_autoencoder_data/grids/CORDEX11.npy",
+    "ERA5": "/net/h2o/climphys1/jkuettel/lin_lat_autoencoder_data/grids/ERA5_025.npy",
+    "E-OBS" : "/net/h2o/climphys1/jkuettel/lin_lat_autoencoder_data/grids/E-OBS.npy"
+
+
+}

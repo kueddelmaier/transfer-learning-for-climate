@@ -1,0 +1,8 @@
+{ 
+    "grid_name": "CORDEX11",
+    "grid_path" : "grids/CORDEX11.npy",
+    "input_mode" : "CORDEX11",
+    "grid_shape": [128,128,1],
+    "mask_path": "grids/masks/CORDEX11.npy"
+
+}
