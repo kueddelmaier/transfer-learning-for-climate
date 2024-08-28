@@ -35,7 +35,7 @@ The Latent Linear Adjustment Autoencoder (LLAAE) builds upon the standard Variat
 
 ### Model Architecture ###
 
-<img src="https://github.com/christinaheinze/climate-ae-refac/raw/master/documentation/linear_latent_ae1.png" width="800">
+<img src="https://github.com/kueddelmaier/transfer-learning-for-climate/blob/main/documentation/LLAAE_illustration.png" width="800">
 
 The LLAAE consists of two main components:
 
@@ -69,16 +69,16 @@ poetry install
 
 We provide a sample data set which is available on Zenodo: 
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3949748.svg)](https://doi.org/10.5281/zenodo.3949748)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3949748.svg)](URL)
 
-The sample data set is a subset of the CRCM5-LE ([Leduc et al. 2019](https://journals.ametsoc.org/jamc/article/58/4/663/336/The-ClimEx-Project-A-50-Member-Ensemble-of-Climate)) and preprocessed as described in our manuscript (TODO: add link). The original data can be accessed at the [ClimEx data Access page](https://www.climex-project.org/en/data-access).
 
-To correctly load the data, you need to copy the file [``settings.py``](https://github.com/christinaheinze/latent-linear-adjustment-autoencoders/blob/master/python/settings.py) and rename it to ``local_settings.py``. In ``local_settings.py``, specify (a) where the data is located in ``DATA_PATH``, and (b) where the output should be saved in ``OUT_PATH``. 
+
+To correctly load the data, you need to copy the file [``settings.py``](https://github.com/kueddelmaier/transfer-learning-for-climate/blob/master/python/settings.py) and rename it to ``local_settings.py``. In ``local_settings.py``, specify (a) where the data is located in ``DATA_PATH``, and (b) where the output should be saved in ``OUT_PATH``. 
 
 
 ## Running experiments
 
-The commands to run the experiments are detailed in ``python/run-experiments.sh``. Note that you need to add the path of the [``python``](https://github.com/christinaheinze/latent-linear-adjustment-autoencoders/blob/master/python) directory to your ``PYTHONPATH`` (see ``python/run-experiments.sh``). 
+The commands to run the experiments are detailed in ``python/run-experiments.sh``. Note that you need to add the path of the [``python``](https://github.com/kueddelmaier/transfer-learning-for-climate/blob/master/python) directory to your ``PYTHONPATH`` (see ``python/run-experiments.sh``). 
 
 The first step consists of training the Latent Linear Adjustment autoencoder model. From the ``python`` directory run:
 
@@ -86,7 +86,7 @@ The first step consists of training the Latent Linear Adjustment autoencoder mod
 python3.7 climate_ae/models/ae/main_ae.py
 ```
 
-By default, the hyperparameters from the file ``python/climate_ae/models/ae/configs/config_dyn_adj_precip.json`` will be used which correspond to the settings needed to reproduce  the precipitation results reported in the manuscript. For temperature, the corresponding hyperparameters are given in ``python/climate_ae/models/ae/configs/config_dyn_adj_temp.json``.
+By default, the hyperparameters from the file ``python/climate_ae/models/ae/configs/config_dyn_adj_precip.json`` will be used which correspond to the settings needed to reproduce  the precipitation results reported in the manuscript. 
 
 Each trained model is associated with a so-called ``CHECKPOINT_ID`` which is needed to load a trained model. The ``CHECKPOINT_ID`` is returned as the last logging statement when training the autoencoder and it is also saved in the model outputs that are written to ``OUT_PATH``.
 
@@ -124,15 +124,18 @@ The following experimental settings are controlled via command line arguments:
 * ``anno_indices``: Number of annotations to use. Here, number of SLP (EOF-derived) time series to use as input _X_ to the linear model _h_. 
 * ``lm_l2_penalty_weight``: L2 penalty weight for linear model.
 * ``num_epochs``: Number of epochs used for training the model.
+* ``data_from_exp``: Load hparams from previous experiment.
+* ``exp_id``: Experiment id where to load hparams.
 
-Further hyperparameters such as filter and kernel sizes can be set in the ``config`` file.
+
+Further hyperparameters such as filter and kernel size, as well as the path for the training and evaluation files can be set in the ``config`` file.
 
 #### ``main_linear.py``
 The following experimental settings are controlled via command line arguments:
 * ``checkpoint_id``: Specifies the checkpoint ID of the autoencoder model that should be loaded. 
 * ``precip``: Flag whether the loaded model was trained for precipitation (otherwise temperature).
 * ``save_nc_files``: Flag whether to save nc files with predictions.
-
+* ``lin_config``: Path to config file for linear model.
 
 #### ``main_generator.py``
 The following experimental settings are controlled via command line arguments:
@@ -187,8 +190,4 @@ sh submit-temp.sh
 ```
 
 ## References
-* Heinze-Deml, C., Sippel, S., Pendergrass, A. G., Lehner, F., and Meinshausen, N., 2020: Latent Linear Adjustment autoencoders: A novel method for estimating and emulating dynamic precipitation at high resolution. arXiV preprint  TODO: complete ref
-* Leduc, M., A. Mailhot, A. Frigon, J. Martel, R. Ludwig, G.B. Brietzke, M. Giguère, F. Brissette, R. Turcotte, M. Braun, and J.
-Scinocca, 2019: The ClimEx Project: A 50-Member Ensemble of Climate Change Projections at 12-km Resolution over
-Europe and Northeastern North America with the Canadian Regional Climate Model (CRCM5). J. Appl. Meteor.
-Climatol., 58, 663–693, https://doi.org/10.1175/JAMC-D-18-0021.1.
+
