@@ -1,23 +1,58 @@
 # Latent Linear Adjustment autoencoders: A novel method for estimating and emulating dynamic precipitation at high resolution
 
-This repository contains the code of the autoencoder model proposed in "Latent Linear Adjustment autoencoders: A novel method for estimating and emulating dynamic precipitation at high resolution" (TODO: add arxiv/gmd link). In the manuscript, we have demonstrated how Latent Linear Adjustment autoencoders can be applied for dynamical adjustment at high resolution and for emulating dynamically-induced variability in daily precipitation fields. Futher applications such as regional detection & attribution, statistical downscaling or transfer learning between models are conceivable.
+This repository contains the code for the Latent Linear Autoencoder (LLAAE) model developed in the study
+"Transfer learning for estimating circulation-induced precipitation variability: from climate models to observations"
 
-This README is not intended to be completely self-explanatory, and should be read alongside the manuscript. Below we give an overview of the model, followed by detailed instructions how to reproduce the results reported in the manuscript. 
+In this study, we have shown how LLAAE's unique architecture enables effective transfer learning from models to observations in climate sciences.
 
-## Model
-Building on variational autoencoders, we introduce the Latent Linear Adjustment autoencoder which enables estimation of the contribution of a coarse-scale atmospheric circulation proxy to daily precipitation at high-resolution and in a spatially coherent manner. 
+This README is meant to be used in conjunction with the accompanying paper, rather than as a standalone guide. Below, we provide an overview of the model, along with detailed instructions on how to reproduce the results presented in the paper.
 
-The schematic below illustrates a standard autoencoder that encodes daily precipitation fields to the latent space _L_ which are subsequently decoded to yield the reconstructions on the right hand side. 
+
+## Abstract
+
+While deep learning and neural networks are gaining increased popularity in
+climate science, the lack of observational training data presents a significant challenge. In this study,
+we show that we can overcome this issue by capitalizing on the abundance of climate model data
+available from regional climate models such as CORDEX. We test this transfer learning approach
+in the context of dynamical adjustment on daily, high-resolution precipitation data over Europe
+using Latent Linear Auto Encoders. These novel statistical models offer a powerful tool
+for transfer learning applications in climate sciences. Firstly, they permit to adapt the model to the
+new domain of interest by retraining the model’s linear components with only a few data samples.
+Secondly, by encoding the data into a lower dimensional probabilistic space, transfer learning can
+be achieved by finding meaningful structures, so-called latent features, between different domains
+that facilitate knowledge transfer. We first validate this transfer learning approach by successfully
+estimating dynamic precipitation and recovering trend estimates across structurally different climate
+models, improving spatial trend estimates by a factor of three compared to raw trends. Finally, we
+apply the Latent Linear Auto Encoder to reanalysis and observational data, showing that the predicted precipitation
+patterns closely match the observations, demonstrating the method’s transferability between climate
+models and real-world observations.
+
+
+## Latent Linear Adjustment Autoencoder (LLAAE)
+
+The Latent Linear Adjustment Autoencoder (LLAAE) builds upon the standard Variational Autoencoder (VAE) architecture with an additional linear component that enhances its robustness, making it particularly interesting for transfer learning applications. The model is designed to capture the relationship between large-scale atmospheric circulation and high-resolution precipitation fields, allowing for spatially coherent predictions in complex climate systems.
+
+
+### Model Architecture ###
 
 <img src="https://github.com/christinaheinze/climate-ae-refac/raw/master/documentation/linear_latent_ae1.png" width="800">
 
-To allow for the climate applications of interest, we extend a standard VAE by adding a linear component _h_ to the architecture. To predict circulation-induced precipitation fields, the Latent Linear Adjustment autoencoder combines the linear component _h_, which models the relationship between circulation and the latent space of an autocoder, with the autoencoder's nonlinear decoder. This is illustrated in the schematic below - here, the precipitation fields on the right hand side show the predictions of circulation-induced precipitation. 
+The LLAAE consists of two main components:
 
-<p align="center">
-<img src="https://github.com/christinaheinze/climate-ae-refac/raw/master/documentation/linear_latent_ae2.png" width="450">
-</p>
+* **Nonlinear Variational Autoencoder (VAE)**: The spatial precipitation fields re encoded into a lower-dimensional probabilistic latent space by the encoder. The decoder then reconstructs the original precipitation fields from this latent representation.
 
-To allow for the linearity between circulation and the latent space, the model is trained with an additional penalty in the cost function that encourages this linearity. The proposed model hence leverages robustness advantages of linear models as well as the flexibility of deep neural networks.
+* **Linear Model** The coarse-resolution sea level pressure field is used to predict the circulation-induced precipitation through the linear model. 
+
+
+### How to Use the LLAAE ###
+
+* **Training the model:** Encoder, decoder and the linear model are initially trained in an alternating manner on large climate model datasets.
+
+* **Transfer to Observations:** When the LLAAE is applied to observational data, the model can be fine-tuned by retraining the linear model with only a few samples of real observations. This retraining allows the model to adapt to new domains, such as observational datasets that differ from the climate model used in the initial training phase.
+
+* **Applications:** The LLAAE can be used for various climate science applications, such as estimating precipitation trends, performing statistical downscaling, and detecting circulation-induced precipitation variability. 
+
+
 
 ## Installing dependencies
 

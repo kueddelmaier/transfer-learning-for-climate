@@ -2,7 +2,7 @@
 
 
 # Add path of python folder to PYTHONPATH -- adjust to your path
-export PYTHONPATH=home/jkuettel/latent-linear-adjustment-autoencoders/python:$PYTHONPATH
+export PYTHONPATH=
 
 # The following commands needs to be run from the python directory.
 
@@ -31,6 +31,7 @@ export PYTHONPATH=home/jkuettel/latent-linear-adjustment-autoencoders/python:$PY
 #### re-train linear model and produce plots, using provided model
 
 python3.8 climate_ae/models/ae/main_linear.py --lin_config='/home/jkuettel/latent-linear-adjustment-autoencoders/python/climate_ae/models/ae/configs/co_train_individual_detrend/test_config_dyn_adj_precip_linear_eobs.json' --precip 1 
+python3.8 climate_ae/models/ae/main_linear.py --lin_config='' --precip 1 
 
 
 ### Weather generator
