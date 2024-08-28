@@ -1,4 +1,4 @@
-# Latent Linear Adjustment autoencoders: A novel method for estimating and emulating dynamic precipitation at high resolution
+# Transfer learning for estimating circulation-induced precipitation variability: from climate models to observations
 
 This repository contains the code for the Latent Linear Autoencoder (LLAAE) model developed in the study
 "Transfer learning for estimating circulation-induced precipitation variability: from climate models to observations"
@@ -39,9 +39,9 @@ The Latent Linear Adjustment Autoencoder (LLAAE) builds upon the standard Variat
 
 The LLAAE consists of two main components:
 
-* **Nonlinear Variational Autoencoder (VAE)**: The spatial precipitation fields re encoded into a lower-dimensional probabilistic latent space by the encoder. The decoder then reconstructs the original precipitation fields from this latent representation.
+1. **Nonlinear Variational Autoencoder (VAE)**: The spatial precipitation fields are encoded into a lower-dimensional probabilistic latent space by the encoder. The decoder then reconstructs the original precipitation fields from this latent representation.
 
-* **Linear Model** The coarse-resolution sea level pressure field is used to predict the circulation-induced precipitation through the linear model. 
+2. **Linear Model** The coarse-resolution sea level pressure field is used to predict the circulation-induced precipitation through the linear model. 
 
 
 ### How to Use the LLAAE ###
@@ -69,37 +69,37 @@ poetry install
 
 We provide a sample data set which is available on Zenodo: 
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3949748.svg)](URL)
-
-
 
 To correctly load the data, you need to copy the file [``settings.py``](https://github.com/kueddelmaier/transfer-learning-for-climate/blob/master/python/settings.py) and rename it to ``local_settings.py``. In ``local_settings.py``, specify (a) where the data is located in ``DATA_PATH``, and (b) where the output should be saved in ``OUT_PATH``. 
 
 
-## Running experiments
+## Running experiments 
 
 The commands to run the experiments are detailed in ``python/run-experiments.sh``. Note that you need to add the path of the [``python``](https://github.com/kueddelmaier/transfer-learning-for-climate/blob/master/python) directory to your ``PYTHONPATH`` (see ``python/run-experiments.sh``). 
+
+### Training the LAAE from scratch
 
 The first step consists of training the Latent Linear Adjustment autoencoder model. From the ``python`` directory run:
 
 ```
-python3.7 climate_ae/models/ae/main_ae.py
+python3.8 climate_ae/models/ae/main_ae.py --precip='' --configs=''
 ```
+The configs to specify the default hyperparameters are located in ``python/climate_ae/models/ae/configs``. The settings to reproduce the results in the manuscript can be found in ``python/climate_ae/models/ae/configs/model_to_model`` and ``python/climate_ae/models/ae/configs/model_to_obs``. The path for the training, test and holdout files are specified in the configs.
 
-By default, the hyperparameters from the file ``python/climate_ae/models/ae/configs/config_dyn_adj_precip.json`` will be used which correspond to the settings needed to reproduce  the precipitation results reported in the manuscript. 
+Each trained model is associated with a so-called ``CHECKPOINT_ID`` which serves as an identifier of the training run. The ``CHECKPOINT_ID`` is returned as the last logging statement when training the autoencoder and it is also saved in the model outputs that are written to ``OUT_PATH``.
 
-Each trained model is associated with a so-called ``CHECKPOINT_ID`` which is needed to load a trained model. The ``CHECKPOINT_ID`` is returned as the last logging statement when training the autoencoder and it is also saved in the model outputs that are written to ``OUT_PATH``.
+### Running a pre-trained model and adjusting the linear model
 
-After training the autoencoder, the linear model can be refitted non-iteratively (keeping the autoencoder parameter fixed) and a number of evaluation plots are produced with the following command. The ``CHECKPOINT_ID`` from the trained autoencoder needs to be passed here, such that the correct model is loaded.
+After training the autoencoder, the linear model can be refitted on a different domain such as an different climate model or observations (keeping the autoencoder parameter fixed). The ``CHECKPOINT_ID`` from the trained autoencoder needs to be passed here, such that the correct model is loaded. The default hyperparameters as well as the training, test and holdout files are passed via the linear config file and can be found under ``python/climate_ae/models/ae/configs/model_to_model`` and ``python/climate_ae/models/ae/configs/model_to_obs``.
 
 ```
-python3.7 climate_ae/models/ae/main_linear.py --checkpoint_id='CHECKPOINT_ID' --precip=1
+python3.8 climate_ae/models/ae/main_linear.py --checkpoint_id='CHECKPOINT_ID' --precip='' --configs=''
 ```
 
 Finally, the weather generator can be trained using the following command, again passing the ``CHECKPOINT_ID`` from the trained autoencoder:
 
 ```
-python3.7 climate_ae/models/ae/main_generator.py --checkpoint_id='CHECKPOINT_ID' --precip=1
+python3.8 climate_ae/models/ae/main_generator.py --checkpoint_id='CHECKPOINT_ID' --precip=1
 ```
 
 ### Command-line arguments and further hyperparameters
@@ -151,43 +151,11 @@ The following experimental settings are controlled via command line arguments:
 
 We provide the checkpoints of the models used to produce the results in the manuscript on Zenodo: 
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3950045.svg)](https://doi.org/10.5281/zenodo.3950045)
-
 The file ``checkpoints.zip`` needs to be extracted into the directory ``OUT_PATH``. 
 
-For precipitation, the ``CHECKPOINT_ID`` is ``nKGagmsKDb_4249785``. For temperature, it is ``LDifH9DdVh_4383207``. Hence, to e.g. refit the linear model non-iteratively and to produce the evaluation plots as above, run the following command: 
-
 ```
-python3.7 climate_ae/models/ae/main_linear.py --checkpoint_id='nKGagmsKDb_4249785' --precip=1
+python3.8 climate_ae/models/ae/main_linear.py --checkpoint_id='nKGagmsKDb_4249785' --precip=1
 ```
 
-## ETH-internal: Running on Leonhard
 
-### Installing dependencies
-
-Run the following commands from the root directory of the repository to install the requirements: 
-```
-bsub -Is -R "rusage[mem=9000, ngpus_excl_p=1]" -R "select[gpu_model1==GeForceGTX1080Ti]" bash
-module load python_gpu/3.7.4
-module load eth_proxy
-python -m venv env
-source env/bin/activate
-pip install -r requirements.txt
-exit
-```
-
-### Data
-Follow the above steps as described under "Data".
-
-
-### Running experiments
-From the login node, run the following commands to launch the precipitation and temperature experiments, respectively:
-```
-source env/bin/activate
-cd launch_scripts
-sh submit-precip.sh
-sh submit-temp.sh
-```
-
-## References
 

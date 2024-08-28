@@ -93,36 +93,6 @@ def main():
         config_dict = utils.get_config(args.config)
         config_dict = utils.update_config(config_dict, args)
 
-        if config_dict["data_from_folder"]:
-            dataset_configs_path = os.path.join(config_dict["data_folder_name"], 'config.json')
-
-            sub_dir = os.path.join(config_dict["data_folder_name"], 'tfrecords_data')
-            data_files = os.listdir(os.path.join(local_settings.DATA_PATH, sub_dir))
-            #print(data_files)
-            
-            train_file = [f for f in data_files if 'train' in f][0]
-            test_file = [f for f in data_files if 'test' in f][0]
-            #holdout_file = [f for f in data_files if 't_holdout' in f][0]
-
-            #holdout_file = [f for f in data_files if 'SMHI_NCC-NorESM1-M_SMHI-RCA4_r1i1p1' in f][0]
-
-            config_dict["train_file"] = os.path.join(sub_dir, train_file)
-            config_dict["test_file"] = os.path.join(sub_dir, test_file )
-
-            #config_dict["holdout_file"] = os.path.join(sub_dir, holdout_file)
-
-
-            #config_dict["holdout_file"] =  os.path.join(sub_dir, holdout_file)
-
-        else:
-            for prename in ["train", "test", "holdout"]:
-                assert prename + "_file" in config_dict, prename + "not in config dict"
-
-        #print(f"train file: {config_dict['train_file']}")   
-        #print(f"test file: {config_dict['test_file']}")
-        #print(f"holdout file: {config_dict['holdout_file']}")
-        ####### UNTIL HERE #######
-
         dataset_config = utils.get_config(os.path.join(local_settings.DATA_PATH, dataset_configs_path))
 
         #update config with dataset configs

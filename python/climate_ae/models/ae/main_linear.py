@@ -30,14 +30,10 @@ parser.add_argument('--offset', type = int,
 parser.add_argument('--save_nc_files', type = int,
     help='Flag whether to save nc files.')
 
-#parser.add_argument('--offset', type = int, default = 0,
-#    help='')
+
 parser.add_argument('--lin_config', type=str,
     default="climate_ae/models/ae/configs/config_dyn_adj_precip_linear_era5.json", 
     help='Path to config file for linear model.')#
-
-
-parser.add_argument('--reanalysis_only', type=int, help='only evaluate reanalysis')
 
 parser.add_argument('--Debug', type=int, help='only evaluate portion of data to debug')
 
@@ -73,31 +69,7 @@ def main():
     print('----------------')
 
 
-        #### REMOVE THIS PART BEFORE PUBLISHING ######
-    #only for convenience
 
-    if lin_config["lin_tr_te_data_from_folder"]:
-
-        sub_dir = os.path.join(lin_config["data_folder_name"], 'tfrecords_data')
-        data_files = os.listdir(os.path.join(local_settings.DATA_PATH, sub_dir))
-        print(data_files)
-        
-        train_file = [f for f in data_files if 'train' in f][0]
-        test_file = [f for f in data_files if 'test' in f][0]
-        
-        
-        lin_config["train_file"] = train_file
-        lin_config["test_file"] = test_file 
-
-        lin_config["train_subdir"] = sub_dir
-        lin_config["test_subdir"] = sub_dir
-
-    else:
-        for prename in ["train", "test"]:
-            assert prename + "_file" in lin_config, prename + " not in config dict"
-        
-    ####### UNTIL HERE #######
-   
     dataset_configs_path = os.path.join(lin_config["data_folder_name"], 'config.json')
 
 

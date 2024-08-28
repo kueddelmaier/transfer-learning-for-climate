@@ -373,72 +373,6 @@ def train_linear_model(config, checkpoint_path, out_dir, reduced_dataset = False
     status.assert_consumed()
 
 
-    ############# REMOVE HERE BRFOR PUBLISH ############################
-    #split same file into train and test
-
-    if config.split_tr_file_in_tr_and_te:
-
-
-                    # get training data for linear latent space model
-        full_inputs, full_recons, full_latents, full_annos, full_years, full_months, full_days = load_data(train_inputs, model, 
-            reduced_dataset = reduced_dataset, reduced_dataset_len = reduced_dataset_len, subset=True, debug=DEBUG)
-
-        assert full_inputs.shape[0] == full_latents.shape[0] == full_annos.shape[0] == full_months.shape[0], 'tr inputs and tr latens and so on dont have same shape'
-
-        #get time dimension of dataset
-        n_time = full_inputs.shape[0]
-
-        #split into train and test
-        #define test datan
-        if DEBUG:
-            n_test = int(0.2 * n_time)
-            rest = 64 - (n_test % 64)
-            n_test = n_test + rest
-        else:
-            n_test = config.min_test_years * 90
-            rest = 64 - (n_test % 64)
-            n_test = n_test + rest
-        n_train = n_time - n_test
-
-        tr_inputs = full_inputs[:n_train,:,:,:]
-        tr_latents = full_latents[:n_train,:]
-        tr_annos = full_annos[:n_train,:]
-        tr_years = full_years[:n_train]
-        tr_months = full_months[:n_train]
-        tr_days = full_days[:n_train]
-
-        te_inputs = full_inputs[n_train:,:,:,:]
-        te_recons = full_recons[n_train:,:,:,:]
-        te_latents = full_latents[n_train:,:]
-        te_annos = full_annos[n_train:,:]
-        te_years = full_years[n_train:]
-        te_months = full_months[n_train:]
-        te_days = full_days[n_train:]
-
-        print('\ntest inputs shape:' , tr_inputs.shape)
-        print('test latents shape:' , tr_latents.shape)
-        print('test  annos shape:' , te_annos.shape)
-
-        assert (tr_inputs.shape[0] + te_inputs.shape[0]) == n_time, 'train shape plus test shape dont equal total time'
-
-    else:
-            # get training data for linear latent space model
-        tr_inputs, _, tr_latents, tr_annos, tr_years, tr_months, tr_days = load_data(train_inputs, model, 
-            reduced_dataset = reduced_dataset, reduced_dataset_len = reduced_dataset_len, subset=True, debug=DEBUG)
-
-            # get test data
-        te_inputs, te_recons, _, te_annos, te_years, te_months, te_days = \
-            load_data(test_inputs, model, debug=DEBUG)
-
-
-    print('train inputs shape:' , tr_inputs.shape)
-    print('train latents shape:' , tr_latents.shape)
-    print('train annos shape:' , tr_annos.shape)
-
-
-    ############# UNITL HERE ##############################
-
-
     #np.save('/home/jkuettel/latent-linear-adjustment-autoencoders/plotting_notebooks/final_plots_paper/meeting_07_06_nicolai/tr_annos.npy', tr_annos)
     #np.save('/home/jkuettel/latent-linear-adjustment-autoencoders/plotting_notebooks/final_plots_paper/meeting_07_06_nicolai/tr_latents.npy', tr_latents)
     
@@ -675,10 +609,6 @@ def train_linear_model(config, checkpoint_path, out_dir, reduced_dataset = False
             print("Mean MSE(x, xhatexp): {}".format(orig_test_metrics["mean_mse_x_xhatexp"]))
             print("Mean R2(x, xhat): {}".format(orig_test_metrics["mean_r2_x_xhat"]))
             print("Mean R2(x, xhatexp): {}".format(orig_test_metrics["mean_r2_x_xhatexp"]))
-
-
-
-
 
 
         #################################
